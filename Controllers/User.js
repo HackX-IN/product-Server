@@ -68,5 +68,27 @@ module.exports = {
     } catch (error) {
       res.status(500).json("Failed to get user");
     }
+  },
+  getProfile: async (req, res) => {
+    const userId = req.userId; // Assuming you have the userId available in the request
+  
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json("User not found");
+      }
+  
+      // Exclude sensitive fields if needed
+      const profile = {
+        name: user.name,
+        email: user.email,
+        
+        // Add additional profile fields here
+      };
+  
+      res.status(200).json(profile);
+    } catch (error) {
+      res.status(500).json("Failed to get user profile");
+    }
   }
 };
