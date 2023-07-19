@@ -22,7 +22,7 @@ module.exports = {
       const savedUser = await newUser.save();
 
       // Generate JWT token
-      const token = jwt.sign({ userId: savedUser._id }, process.env.SECRET || 'inam123');
+      const token = jwt.sign({  userId: savedUser._id, email: savedUser.email, name: savedUser.name }, process.env.SECRET || 'inam123');
 
       res.status(200).json({ token });
     } catch (error) {
