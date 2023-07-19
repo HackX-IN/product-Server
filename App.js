@@ -4,6 +4,7 @@ const port = 3000
 const dotenv=require('dotenv')
 const mongoose=require('mongoose')
 const productRouter=require('./Router/Product')
+const userRouter=require('./Router/User')
 const cors = require('cors');
 
 
@@ -19,7 +20,7 @@ app.use(express.urlencoded({extended:true,limit:'10mb'}))
 mongoose.connect(process.env.MONGO_URL).then(()=>console.log('DB Connected'))
 
 app.use('/api/v1',productRouter)
-
+app.use('/api/v1',userRouter)
 
 
 
