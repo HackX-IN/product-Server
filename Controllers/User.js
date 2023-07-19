@@ -47,7 +47,7 @@ module.exports = {
       }
 
       // Generate JWT token
-      const token = jwt.sign({ userId: user._id }, process.env.SECRET || 'inam123');
+    const token = jwt.sign({ userId: user._id,email:user.email,name:user.name }, process.env.SECRET || 'inam123');
 
       res.status(200).json({ token });
        res.cookie('token',token)
