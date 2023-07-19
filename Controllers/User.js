@@ -50,6 +50,7 @@ module.exports = {
       const token = jwt.sign({ userId: user._id }, process.env.SECRET || 'inam123');
 
       res.status(200).json({ token });
+       res.cookie('token',token)
     } catch (error) {
       console.error(error);
       res.status(500).json("Failed to log in: " + error.message);
@@ -70,25 +71,15 @@ module.exports = {
     }
   },
   getProfile: async (req, res) => {
-    const userId = req.userId; // Assuming you have the userId available in the request
-  
-    try {
-      const user = await User.findById(userId);
-      if (!user) {
-        return res.status(404).json("User not found");
-      }
-  
-      // Exclude sensitive fields if needed
-      const profile = {
-        name: user.name,
-        email: user.email,
-        
-        // Add additional profile fields here
-      };
-  
-      res.status(200).json(profile);
-    } catch (error) {
-      res.status(500).json("Failed to get user profile");
+    const {token}=req.cookies
+    if(token){
+      jwt.verify(token,process.env.SECRET||'inam123',{},(err,user)=>{
+        if(err) throw err;
+        res.json(user)
+      })
+    } else{
+      res.json(null)
     }
+  
   }
 };
