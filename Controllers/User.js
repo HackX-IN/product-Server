@@ -142,5 +142,19 @@ module.exports = {
       console.error("Error removing product from wishlist:", error);
       res.status(500).json("Failed to remove product from wishlist");
     }
+  },getWishlist : async (req, res) => {
+    const { userId } = req.params;
+    try {
+      // Check if the user exists
+      const user = await User.findById(userId).populate('wishlist', 'name price'); // Only retrieve 'name' and 'price' properties of the products
+      if (!user) {
+        return res.status(404).json("User not found");
+      }
+  
+      res.status(200).json(user.wishlist);
+    } catch (error) {
+      console.error("Error getting user wishlist:", error);
+      res.status(500).json("Failed to get user wishlist");
+    }
   }
 };
