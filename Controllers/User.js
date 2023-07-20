@@ -81,5 +81,65 @@ module.exports = {
       res.json(null)
     }
   
+  },
+    addToWishlist : async (req, res) => {
+    const { userId, productId } = req.params;
+    try {
+      // Check if the user exists
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json("User not found");
+      }
+  
+      // Check if the product exists
+      const product = await Product.findById(productId);
+      if (!product) {
+        return res.status(404).json("Product not found");
+      }
+  
+      // Check if the product is already in the user's wishlist
+      if (user.wishlist.includes(productId)) {
+        return res.status(400).json("Product is already in the wishlist");
+      }
+  
+      // Add the product's ObjectId to the user's wishlist
+      user.wishlist.push(productId);
+      await user.save();
+  
+      res.status(200).json(user);
+    } catch (error) {
+      console.error("Error adding product to wishlist:", error);
+      res.status(500).json("Failed to add product to wishlist");
+    }
+  },
+ removeFromWishlist : async (req, res) => {
+    const { userId, productId } = req.params;
+    try {
+      // Check if the user exists
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json("User not found");
+      }
+  
+      // Check if the product exists
+      const product = await Product.findById(productId);
+      if (!product) {
+        return res.status(404).json("Product not found");
+      }
+  
+      // Check if the product is in the user's wishlist
+      if (!user.wishlist.includes(productId)) {
+        return res.status(400).json("Product is not in the wishlist");
+      }
+  
+      // Remove the product's ObjectId from the user's wishlist
+      user.wishlist = user.wishlist.filter(item => item.toString() !== productId);
+      await user.save();
+  
+      res.status(200).json(user);
+    } catch (error) {
+      console.error("Error removing product from wishlist:", error);
+      res.status(500).json("Failed to remove product from wishlist");
+    }
   }
 };
