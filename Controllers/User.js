@@ -107,7 +107,13 @@ module.exports = {
       user.wishlist.push(productId);
       await user.save();
   
-      res.status(200).json(user);
+      // Populate the wishlist array with the product name and imageUrl
+      const populatedWishlist = await User.findById(userId).populate({
+        path: 'wishlist',
+        select: 'title imageUrl price', // Only retrieve 'name', 'imageUrl', and 'price' properties of the products
+      });
+  
+      res.status(200).json(populatedWishlist);
     } catch (error) {
       console.error("Error adding product to wishlist:", error);
       res.status(500).json("Failed to add product to wishlist");
@@ -146,7 +152,7 @@ module.exports = {
     const { userId } = req.params;
     try {
       // Check if the user exists
-      const user = await User.findById(userId).populate('wishlist', 'name price'); // Only retrieve 'name' and 'price' properties of the products
+      const user = await User.findById(userId).populate('wishlist', 'title imageUrl price'); // Only retrieve 'name', 'imageUrl', and 'price' properties of the products
       if (!user) {
         return res.status(404).json("User not found");
       }
