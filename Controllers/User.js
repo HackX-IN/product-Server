@@ -1,4 +1,5 @@
 const User = require('../Models/UserModel');
+const Product = require('../Models/Product');
 const jwt = require('jsonwebtoken');
 const { hashPassword,ComparePassword } = require('../Middleware/hashPassword');
 
