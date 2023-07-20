@@ -7,5 +7,5 @@ router.get('/user/:id', UserControllers.getById);
 router.get('/user/profile', UserControllers.getProfile);
 router.post('/user/:userId/wishlist/:productId', UserControllers.addToWishlist);
 router.delete('/user/:userId/wishlist/:productId', UserControllers.removeFromWishlist);
-
+router.get('/user/:userId/wishlist', UserControllers.getWishlist);
 module.exports = router;
