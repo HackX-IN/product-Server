@@ -7,6 +7,7 @@ const productRouter=require('./Router/Product')
 const userRouter=require('./Router/User')
 const cors = require('cors');
 const cookieParser=require('cookie-parser')
+const paymentRoutes = require('./Router/Payment');
 
 
 dotenv.config()
@@ -24,6 +25,8 @@ mongoose.connect(process.env.MONGO_URL).then(()=>console.log('DB Connected'))
 
 app.use('/api/v1',productRouter)
 app.use('/api/v1',userRouter)
+
+app.use('/api/v1/payments', paymentRoutes);
 
 
 
